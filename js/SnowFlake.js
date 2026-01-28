@@ -1,4 +1,4 @@
-class SnowFlake {
+class Snowflake {
     constructor(canvasWidth, canvasHeight) {
         this.canvasWidth = canvasWidth;
         this.canvasHeight = canvasHeight;
