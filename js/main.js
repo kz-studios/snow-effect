@@ -35,7 +35,7 @@ const header = document.querySelector('#panel-header');
 
 let isDragging = false;
 let baseX, baseY;                         // Origin of control panel's new transformed coordinates
-let mouseOffsetX, mouseOffsetY;           // Distance from start of mousedown to end of mouseup
+let mouseOffsetX, mouseOffsetY;           // Distance from mousedown to current mousemove
 let originOffsetX = 0, originOffsetY = 0; // Distance from control panel's origin to last drag location
 
 header.addEventListener('mousedown', dragStart);
@@ -57,7 +57,7 @@ function drag(e) {
         mouseOffsetY = e.clientY - baseY;
 
         originOffsetX = mouseOffsetX;
-        originOffsetY = mouseOffsetX;
+        originOffsetY = mouseOffsetY;
 
         placePanel(mouseOffsetX, mouseOffsetY, panel);
     }
