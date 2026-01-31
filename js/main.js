@@ -29,3 +29,44 @@ function animate() {
 }
 
 animate();
+
+const panel = document.querySelector('#control-panel');
+const header = document.querySelector('#panel-header');
+
+let isDragging = false;
+let baseX, baseY;                         // Origin of control panel's new transformed coordinates
+let mouseOffsetX, mouseOffsetY;           // Distance from start of mousedown to end of mouseup
+let originOffsetX = 0, originOffsetY = 0; // Distance from control panel's origin to last drag location
+
+header.addEventListener('mousedown', dragStart);
+window.addEventListener('mousemove', drag);
+window.addEventListener('mouseup', dragEnd);
+
+function dragStart(e) {
+    baseX = e.clientX - originOffsetX;
+    baseY = e.clientY - originOffsetY;
+
+    if (e.target === header) isDragging = true;
+}
+
+function drag(e) {
+    if (isDragging) {
+        e.preventDefault();
+
+        mouseOffsetX = e.clientX - baseX;
+        mouseOffsetY = e.clientY - baseY;
+
+        originOffsetX = mouseOffsetX;
+        originOffsetY = mouseOffsetX;
+
+        placePanel(mouseOffsetX, mouseOffsetY, panel);
+    }
+}
+
+function dragEnd() {
+    isDragging = false;
+}
+
+function placePanel(x, y, el) {
+    el.style.transform = `translate3d(${x}px, ${y}px, 0)`
+}
