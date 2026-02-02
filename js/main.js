@@ -32,6 +32,15 @@ animate();
 
 const panel = document.querySelector('#control-panel');
 const header = document.querySelector('#panel-header');
+const panelRect = panel.getBoundingClientRect();
+
+let originalLeft = panelRect.left;        // Distance from window's left side to control panel's left side
+let originalTop = panelRect.top;          // Distance from window's top side to control panel's top side
+
+// Maximum and minimum x-axis translation of control panel
+const maxX = window.innerWidth - (originalLeft + panel.offsetWidth), minX = -panelRect.left;
+// Maximum and minimum y-axis translation of control panel
+const maxY = window.innerHeight - (originalTop + panel.offsetHeight), minY = -panelRect.top;
 
 let isDragging = false;
 let baseX, baseY;                         // Origin of control panel's new transformed coordinates
@@ -59,7 +68,10 @@ function drag(e) {
         originOffsetX = mouseOffsetX;
         originOffsetY = mouseOffsetY;
 
-        placePanel(mouseOffsetX, mouseOffsetY, panel);
+        clampedX = Math.min(maxX, Math.max(minX, mouseOffsetX));
+        clampedY = Math.min(maxY, Math.max(minY, mouseOffsetY));
+
+        placePanel(clampedX, clampedY, panel);
     }
 }
 
