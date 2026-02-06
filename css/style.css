@@ -18,8 +18,8 @@ body {
 
 #control-panel {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
+    top: 480px;
+    left: 1100px;
     padding: 0;
     background: white;
     box-shadow: 0 4px 10px rgba(0,0,0,0.3);

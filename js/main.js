@@ -1,9 +1,12 @@
 const canvas = document.getElementById('snow-overlay');
 const ctx = canvas.getContext('2d');
+const panel = document.querySelector('#control-panel');
+const header = document.querySelector('#panel-header');
 
 function resizeCanvas() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
+    calculateBoundaries();
 }
 
 window.addEventListener('resize', resizeCanvas);
@@ -30,22 +33,10 @@ function animate() {
 
 animate();
 
-const panel = document.querySelector('#control-panel');
-const header = document.querySelector('#panel-header');
-const panelRect = panel.getBoundingClientRect();
-
-let originalLeft = panelRect.left;        // Distance from window's left side to control panel's left side
-let originalTop = panelRect.top;          // Distance from window's top side to control panel's top side
-
-// Maximum and minimum x-axis translation of control panel
-const maxX = window.innerWidth - (originalLeft + panel.offsetWidth), minX = -panelRect.left;
-// Maximum and minimum y-axis translation of control panel
-const maxY = window.innerHeight - (originalTop + panel.offsetHeight), minY = -panelRect.top;
-
 let isDragging = false;
 let baseX, baseY;                         // Origin of control panel's new transformed coordinates
 let mouseOffsetX, mouseOffsetY;           // Distance from mousedown to current mousemove
-let originOffsetX = 0, originOffsetY = 0; // Distance from control panel's origin to last drag location
+let originOffsetX = 0, originOffsetY = 0; // Distance from control panel's starting origin to last drag location
 
 header.addEventListener('mousedown', dragStart);
 window.addEventListener('mousemove', drag);
@@ -82,3 +73,12 @@ function dragEnd() {
 function placePanel(x, y, el) {
     el.style.transform = `translate3d(${x}px, ${y}px, 0)`
 }
+
+function calculateBoundaries() {
+    maxX = window.innerWidth - panel.offsetWidth - panel.offsetLeft;
+    minX = -panel.offsetLeft;
+    maxY = window.innerHeight - panel.offsetHeight - panel.offsetTop;
+    minY = -panel.offsetTop;
+}
+
+calculateBoundaries();
