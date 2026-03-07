@@ -1,84 +1,45 @@
+import ControlPanel from './ControlPanel.js';
+import Snowflake from './Snowflake.js';
+
 const canvas = document.getElementById('snow-overlay');
 const ctx = canvas.getContext('2d');
-const panel = document.querySelector('#control-panel');
-const header = document.querySelector('#panel-header');
+
+const panel = new ControlPanel();
 
 function resizeCanvas() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    calculateBoundaries();
 }
 
 window.addEventListener('resize', resizeCanvas);
-
 resizeCanvas();
 
 const snowflakes = [];
 const numberOfFlakes = 100;
 
 for (let i = 0; i < numberOfFlakes; i++) {
-    snowflakes.push(new Snowflake(canvas.width, canvas.height));
+    const flake = new Snowflake();
+    flake.reset(canvas.width, canvas.height); 
+    snowflakes.push(flake);
 }
 
-function animate() {
+let lastTime = 0;
+
+function animate(timestamp) {
+    if (!lastTime) lastTime = timestamp;
+    const dt = (timestamp - lastTime) / 1000;
+    lastTime = timestamp;
+
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+    const currentSpeedMultiplier = panel.settings.speedMultiplier;
+
     snowflakes.forEach(flake => {
-        flake.update(); 
+        flake.update(currentSpeedMultiplier, dt, canvas.width, canvas.height); 
         flake.draw(ctx);   
     });
 
     requestAnimationFrame(animate);
 }
 
-animate();
-
-let isDragging = false;
-let baseX, baseY;                         // Origin of control panel's new transformed coordinates
-let mouseOffsetX, mouseOffsetY;           // Distance from mousedown to current mousemove
-let originOffsetX = 0, originOffsetY = 0; // Distance from control panel's starting origin to last drag location
-
-header.addEventListener('mousedown', dragStart);
-window.addEventListener('mousemove', drag);
-window.addEventListener('mouseup', dragEnd);
-
-function dragStart(e) {
-    baseX = e.clientX - originOffsetX;
-    baseY = e.clientY - originOffsetY;
-
-    if (e.target === header) isDragging = true;
-}
-
-function drag(e) {
-    if (isDragging) {
-        e.preventDefault();
-
-        mouseOffsetX = e.clientX - baseX;
-        mouseOffsetY = e.clientY - baseY;
-
-        originOffsetX = mouseOffsetX;
-        originOffsetY = mouseOffsetY;
-
-        clampedX = Math.min(maxX, Math.max(minX, mouseOffsetX));
-        clampedY = Math.min(maxY, Math.max(minY, mouseOffsetY));
-
-        placePanel(clampedX, clampedY, panel);
-    }
-}
-
-function dragEnd() {
-    isDragging = false;
-}
-
-function placePanel(x, y, el) {
-    el.style.transform = `translate3d(${x}px, ${y}px, 0)`
-}
-
-function calculateBoundaries() {
-    maxX = window.innerWidth - panel.offsetWidth - panel.offsetLeft;
-    minX = -panel.offsetLeft;
-    maxY = window.innerHeight - panel.offsetHeight - panel.offsetTop;
-    minY = -panel.offsetTop;
-}
-
-calculateBoundaries();
+requestAnimationFrame(animate);

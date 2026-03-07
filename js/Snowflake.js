@@ -1,16 +1,20 @@
-class Snowflake {
-    constructor(canvasWidth, canvasHeight) {
-        this.canvasWidth = canvasWidth;
-        this.canvasHeight = canvasHeight;
-        this.reset();
+export default class Snowflake {
+    constructor() {
+        this.x = 0;
+        this.y = 0;
+        this.size = 0;
+        this.speed = 0;
     }
 
-    update() {
-        this.y += this.speed;
+    // dt = delta time
+    update(multiplier, dt, canvasWidth, canvasHeight) {
+        this.y += (this.speed * multiplier * dt * 60);
 
-        if (this.y > this.canvasHeight) {
+        if (this.y > canvasHeight) {
             this.y = -this.size;
-            this.x = Math.random() * this.canvasWidth;
+            this.x = Math.random() * canvasWidth;
+            this.size = Math.random() * 5 + 2;
+            this.speed = Math.random() * 2 + 1;
         }
     }
 
@@ -21,9 +25,9 @@ class Snowflake {
         ctx.fill();
     }
 
-    reset() {
-        this.x = Math.random() * this.canvasWidth;
-        this.y = -(Math.random() * this.canvasHeight);
+    reset(canvasWidth, canvasHeight) {
+        this.x = Math.random() * canvasWidth;
+        this.y = -(Math.random() * canvasHeight);
         this.size = Math.random() * 5 + 2;
         this.speed = Math.random() * 2 + 1;
     }

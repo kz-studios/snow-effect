@@ -19,9 +19,10 @@ body {
 #control-panel {
     position: fixed;
     top: 480px;
-    left: 1100px;
+    left: 875px;
+    width: 400px;
     padding: 0;
-    background: white;
+    background: #28292e;
     box-shadow: 0 4px 10px rgba(0,0,0,0.3);
     overflow: hidden;
     user-select: none;
