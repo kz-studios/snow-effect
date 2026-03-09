@@ -6,7 +6,7 @@ export default class Snowflake {
         this.speed = 0;
     }
 
-    // dt = delta time
+    // dt = delta time (amount of time that has passed between the previous frame and the current frame)
     update(multiplier, dt, canvasWidth, canvasHeight) {
         this.y += (this.speed * multiplier * dt * 60);
 
@@ -18,11 +18,22 @@ export default class Snowflake {
         }
     }
 
-    draw(ctx) {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fillStyle = 'white';
-        ctx.fill();
+    draw(ctx, currentAsset) {
+        if (typeof currentAsset === 'string') {
+            switch (currentAsset) {
+                case 'circle':
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fillStyle = 'white';
+                    ctx.fill();
+                    break;
+                default:
+                    console.warn(`Unknown shape string: ${currentAsset}`);
+            }
+        }
+        else if (currentAsset instanceof HTMLImageElement) {
+            ctx.drawImage(currentAsset, this.x - this.size, this.y - this.size, this.size * 2, this.size * 2.5)
+        }
     }
 
     reset(canvasWidth, canvasHeight) {

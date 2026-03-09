@@ -7,7 +7,8 @@ export default class ControlPanel {
         this.panelContent = document.querySelector('.panel-content');
 
         this.PARAMS = {
-            speedMultiplier: 1.0
+            speedMultiplier: 1.0,
+            snowflakeAsset: 'circle'
         };
         this.initTweakpane();
 
@@ -31,10 +32,23 @@ export default class ControlPanel {
     }
 
     initTweakpane() {
-        this.panelContent.innerHTML = '';
-
         this.pane = new Pane({
             container: this.panelContent,
+        });
+
+        const assetBinding = this.pane.addBinding(this.PARAMS, 'snowflakeAsset', {
+            label: 'Snowflake Asset',
+            options: {
+                'Circle (default)': 'circle',
+                'Snowflake': 'snowflake',
+            }
+        });
+
+        assetBinding.on('change', (ev) => {
+            const event = new CustomEvent('assetChanged', {
+                detail: { asset: ev.value } 
+            });
+            window.dispatchEvent(event);
         });
 
         this.pane.addBinding(this.PARAMS, 'speedMultiplier', {

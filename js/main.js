@@ -6,6 +6,24 @@ const ctx = canvas.getContext('2d');
 
 const panel = new ControlPanel();
 
+let activeAsset = 'circle';
+
+window.addEventListener('assetChanged', (e) => {
+    const selectedAsset = e.detail.asset;
+    console.log('New asset is:', selectedAsset);
+
+    if (selectedAsset === 'snowflake') {
+        const snowflakeImg = new Image();
+        
+        snowflakeImg.onload = () => {
+            activeAsset = snowflakeImg; 
+        };
+        
+        snowflakeImg.src = 'assets/snowflake-png.webp';
+        
+    } else if (selectedAsset === 'circle') activeAsset = 'circle';
+});
+
 function resizeCanvas() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -27,6 +45,7 @@ let lastTime = 0;
 
 function animate(timestamp) {
     if (!lastTime) lastTime = timestamp;
+    // dt = delta time (amount of time that has passed between the previous frame and the current frame)
     const dt = (timestamp - lastTime) / 1000;
     lastTime = timestamp;
 
@@ -36,7 +55,7 @@ function animate(timestamp) {
 
     snowflakes.forEach(flake => {
         flake.update(currentSpeedMultiplier, dt, canvas.width, canvas.height); 
-        flake.draw(ctx);   
+        flake.draw(ctx, activeAsset);
     });
 
     requestAnimationFrame(animate);
