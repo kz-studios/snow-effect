@@ -10,6 +10,13 @@ export default class ControlPanel {
             speedMultiplier: 1.0,
             snowflakeAsset: 'circle'
         };
+        const mediaQuery = window.matchMedia('(max-width: 768px)');
+        this.isMobile = mediaQuery.matches;
+
+        mediaQuery.addEventListener('change', (event) => {
+            this.isMobile = event.matches; 
+        });
+
         this.initTweakpane();
 
         this.isDragging = false;
@@ -84,6 +91,8 @@ export default class ControlPanel {
     }
 
     dragStart(e) {
+        if (this.isMobile) return;
+
         this.baseX = e.clientX - this.originOffsetX;
         this.baseY = e.clientY - this.originOffsetY;
 

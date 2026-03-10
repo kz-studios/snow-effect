@@ -45,3 +45,29 @@ body {
 .panel-content {
     padding: 15px;
 }
+
+@media (max-width: 768px) {
+    body {
+        margin: 0;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    #snow-overlay {
+        position: static;
+        height: 0;
+        flex-grow: 1;
+    }
+
+    #control-panel {
+        position: static;
+        width: 100%;
+        bottom: auto;
+        right: auto;
+    }
+
+    #panel-header {
+        cursor: default;
+    }
+}

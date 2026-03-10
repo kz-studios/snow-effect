@@ -1,7 +1,7 @@
 import ControlPanel from './ControlPanel.js';
 import Snowflake from './Snowflake.js';
 
-const canvas = document.getElementById('snow-overlay');
+const canvas = document.querySelector('#snow-overlay');
 const ctx = canvas.getContext('2d');
 
 const panel = new ControlPanel();
@@ -25,8 +25,8 @@ window.addEventListener('assetChanged', (e) => {
 });
 
 function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    canvas.width = canvas.clientWidth;
+    canvas.height = canvas.clientHeight;
 }
 
 window.addEventListener('resize', resizeCanvas);
