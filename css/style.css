@@ -18,8 +18,8 @@ body {
 
 #control-panel {
     position: fixed;
-    top: 480px;
-    left: 875px;
+    bottom: 50px;
+    right: 50px;
     width: 400px;
     padding: 0;
     background: #28292e;

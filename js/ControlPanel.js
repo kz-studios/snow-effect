@@ -19,16 +19,30 @@ export default class ControlPanel {
         this.mouseOffsetY = 0;
         this.originOffsetX = 0;
         this.originOffsetY = 0;
-
         this.minX = 0;
         this.maxX = 0;
         this.minY = 0;
         this.maxY = 0;
-
         this.calculateBoundaries();
         this.initDragListeners();
 
-        window.addEventListener('resize', () => this.calculateBoundaries());
+        this.resizeTimer = null;
+
+        // Put the control panel back to its relative position during window resize
+        window.addEventListener('resize', () => {
+            clearTimeout(this.resizeTimer);
+            this.resizeTimer = setTimeout(() => {
+                this.panel.style.transform = '';
+                this.isDragging = false;
+                this.baseX = 0;
+                this.baseY = 0;
+                this.mouseOffsetX = 0;
+                this.mouseOffsetY = 0;
+                this.originOffsetX = 0;
+                this.originOffsetY = 0;
+                this.calculateBoundaries();
+            }, 500);
+        });
     }
 
     initTweakpane() {
