@@ -12,14 +12,17 @@ export default class Snowflake {
         this.x += Math.sin(rad) * (this.speed * multiplier * dt * 60);
         this.y += Math.cos(rad) * (this.speed * multiplier * dt * 60);
 
-        if (this.y > canvasHeight) {
+        if (this.y > canvasHeight + (2 * this.size)) {
             this.y = -this.size;
             this.x = Math.random() * canvasWidth;
             this.size = Math.random() * 5 + 2;
             this.speed = Math.random() * 2 + 1;
         }
-        if (this.x < 0) this.x = canvasWidth;
-        if (this.x > canvasWidth) this.x = 0;
+        if (this.x < -(2 * this.size)) {
+            this.x = canvasWidth + (2 * this.size);
+        } else if (this.x > (canvasWidth + (2 * this.size))) {
+            this.x = -(2 * this.size);
+        }
     }
 
     draw(ctx, currentAsset) {
