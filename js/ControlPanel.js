@@ -8,7 +8,8 @@ export default class ControlPanel {
 
         this.PARAMS = {
             speedMultiplier: 1.0,
-            snowflakeAsset: 'circle'
+            snowflakeAsset: 'circle',
+            driftAngle: 0
         };
         const mediaQuery = window.matchMedia('(max-width: 768px)');
         this.isMobile = mediaQuery.matches;
@@ -77,6 +78,13 @@ export default class ControlPanel {
             max: 5,
             step: 0.1,
             label: 'Speed (Avg)'
+        });
+
+        this.pane.addBinding(this.PARAMS, 'driftAngle', {
+            min: -75,
+            max: 75,
+            step: 1,
+            label: 'Drift Angle'
         });
     }
 
