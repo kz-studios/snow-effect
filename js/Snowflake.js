@@ -7,12 +7,11 @@ export default class Snowflake {
     }
 
     // dt = delta time (amount of time that has passed between the previous frame and the current frame)
-    update(sizeAvg, multiplier, degrees, dt, canvasWidth, canvasHeight) {
+    update(sizeAvg, multiplier, driftRad, dt, canvasWidth, canvasHeight) {
         this.size = sizeAvg * this.baseScale;
 
-        let rad = degrees * (Math.PI / 180);
-        this.x += Math.sin(rad) * (this.speed * multiplier * dt * 60);
-        this.y += Math.cos(rad) * (this.speed * multiplier * dt * 60);
+        this.x += Math.sin(driftRad) * (this.speed * multiplier * dt * 60);
+        this.y += Math.cos(driftRad) * (this.speed * multiplier * dt * 60);
 
         if (this.y > canvasHeight + (2 * this.size)) {
             this.baseScale = Math.random() * 1 + 0.5;
@@ -34,7 +33,6 @@ export default class Snowflake {
                 case 'circle':
                     ctx.beginPath();
                     ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                    ctx.fillStyle = 'white';
                     ctx.fill();
                     break;
                 default:

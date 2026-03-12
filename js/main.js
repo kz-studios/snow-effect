@@ -50,18 +50,15 @@ function animate(timestamp) {
     lastTime = timestamp;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = 'white';
 
     const currentSizeAvg = panel.settings.sizeAvg;
     const currentSpeedMultiplier = panel.settings.speedMultiplier;
     const currentDriftAngle = panel.settings.driftAngle;
+    const driftRad = currentDriftAngle * (Math.PI / 180);
 
     snowflakes.forEach(flake => {
-        flake.update(currentSizeAvg,
-            currentSpeedMultiplier, 
-            currentDriftAngle, 
-            dt, 
-            canvas.width, 
-            canvas.height); 
+        flake.update(currentSizeAvg, currentSpeedMultiplier, driftRad, dt, canvas.width, canvas.height);
         flake.draw(ctx, activeAsset);
     });
 
