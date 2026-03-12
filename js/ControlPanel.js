@@ -7,8 +7,9 @@ export default class ControlPanel {
         this.panelContent = document.querySelector('.panel-content');
 
         this.PARAMS = {
-            speedMultiplier: 1.0,
             snowflakeAsset: 'circle',
+            sizeAvg: 5,
+            speedMultiplier: 1.0,
             driftAngle: 0
         };
         const mediaQuery = window.matchMedia('(max-width: 768px)');
@@ -72,6 +73,13 @@ export default class ControlPanel {
             });
             window.dispatchEvent(event);
         });
+
+        this.pane.addBinding(this.PARAMS, 'sizeAvg', {
+            min: 1,
+            max: 50,
+            step: 1,
+            label: 'Size (Avg)'
+        })
 
         this.pane.addBinding(this.PARAMS, 'speedMultiplier', {
             min: 0,

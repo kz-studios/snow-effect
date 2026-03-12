@@ -7,16 +7,19 @@ export default class Snowflake {
     }
 
     // dt = delta time (amount of time that has passed between the previous frame and the current frame)
-    update(multiplier, degrees, dt, canvasWidth, canvasHeight) {
+    update(sizeAvg, multiplier, degrees, dt, canvasWidth, canvasHeight) {
+        this.size = sizeAvg * this.baseScale;
+
         let rad = degrees * (Math.PI / 180);
         this.x += Math.sin(rad) * (this.speed * multiplier * dt * 60);
         this.y += Math.cos(rad) * (this.speed * multiplier * dt * 60);
 
         if (this.y > canvasHeight + (2 * this.size)) {
-            this.y = -this.size;
-            this.x = Math.random() * canvasWidth;
-            this.size = Math.random() * 5 + 2;
+            this.baseScale = Math.random() * 1 + 0.5;
             this.speed = Math.random() * 2 + 1;
+            this.size = sizeAvg * this.baseScale;
+            this.y = -(this.size * 2); 
+            this.x = Math.random() * canvasWidth;
         }
         if (this.x < -(2 * this.size)) {
             this.x = canvasWidth + (2 * this.size);
@@ -46,7 +49,7 @@ export default class Snowflake {
     reset(canvasWidth, canvasHeight) {
         this.x = Math.random() * canvasWidth;
         this.y = -(Math.random() * canvasHeight);
-        this.size = Math.random() * 5 + 2;
+        this.baseScale = Math.random() * 1 + 0.5;
         this.speed = Math.random() * 2 + 1;
     }
 }
